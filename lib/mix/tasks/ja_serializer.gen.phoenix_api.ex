@@ -33,7 +33,7 @@ if Code.ensure_loaded?(Phoenix) do
       default_opts = Application.get_env(:phoenix, :generators, [])
       opts = Keyword.merge(default_opts, opts)
 
-      attrs    = Mix.Phoenix.attrs(attrs)
+      attrs    = Mix.Phoenix.Schema.attrs(attrs)
       refs     = references(attrs)
       non_refs = non_references(attrs) ++ [:inserted_at, :updated_at] |> Enum.map(fn(x) -> Atom.to_string(x) end)
       binding  = Mix.Phoenix.inflect(singular)
@@ -41,7 +41,7 @@ if Code.ensure_loaded?(Phoenix) do
       route    = String.split(path, "/") |> Enum.drop(-1) |> Kernel.++([plural]) |> Enum.join("/")
       binding  = binding ++ [plural: plural, route: route,
                              binary_id: opts[:binary_id],
-                             attrs: attrs, params: Mix.Phoenix.params(attrs),
+                             attrs: attrs, params: Mix.Phoenix.Schema.params(attrs),
                              refs: refs, non_refs: non_refs]
 
       Mix.Phoenix.check_module_name_availability!(binding[:module] <> "Controller")
